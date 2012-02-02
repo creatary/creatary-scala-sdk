@@ -1,8 +1,8 @@
 # creatary-scala-sdk
 
-A Scaka SDK that provides a simple API to connect your web application with the Creatary platform.
+A Scala SDK that provides a simple API to connect your web application with the Creatary platform.
 
-send SMS, query location, charge subscribers and checking your transaction all through their mobile operator, in a revenue share, no upfront investment model._
+send SMS, query location, charge subscribers and checking your transaction all through their mobile operator, in a revenue share, no upfront investment model.
 
 http://creatary.com
 
