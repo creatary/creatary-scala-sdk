@@ -23,7 +23,7 @@ trait ProductionEnvironment extends SmsSenderComponent with LocationFetcherCompo
   val smser = new SmsSender
   val charger = new ChargingRequestor
   val localizer = new LocationFetcher
-  val client: HttpClient = null
+  val httpClient: HttpClient = null
   
 }
 

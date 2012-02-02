@@ -15,7 +15,7 @@ import com.creatary.api.ChargingRequestorComponent
  */
 trait TestingEnvironment extends ProductionEnvironment {
 
-  override val client = mock(classOf[HttpClient])
+  override val httpClient = mock(classOf[HttpClient])
   override val executor = new ConfigurableHttp
   override val sender = mock(classOf[RequestSender])
   override val smser = mock(classOf[SmsSender])

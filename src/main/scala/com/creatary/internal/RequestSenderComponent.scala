@@ -8,7 +8,7 @@ import org.apache.http.client.HttpClient
 case class Request(url: String, accessToken: String, body: Option[AnyRef] = None)
 
 trait HttpClientComponent {
-  val client: HttpClient
+  val httpClient: HttpClient
 }
 
 trait RequestExecutorComponent { this: HttpClientComponent =>
@@ -16,7 +16,7 @@ trait RequestExecutorComponent { this: HttpClientComponent =>
   val executor: Http
 
   class ConfigurableHttp extends Http {
-    override def make_client = client
+    override def make_client = httpClient
   }
 
 }

@@ -8,7 +8,7 @@ import com.creatary.api.ChargeRequestMethod._
 
 object CreataryDemos extends App {
 
-  val creatary = new Creatary("testenv.telcoassetmarketplace.com")
+  val creatary = new Creatary("telcoassetmarketplace.com")
   val access_token = "valid_access_token"
   //sending sms
   val sms = Sms("Hello world")
