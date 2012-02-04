@@ -14,29 +14,63 @@ then its easy to use:
 
 ```scala
 val creatary = new Creatary("telcoassetmarketplace.com")
+val access_token = "valid_access_token"
 
 //sending sms
-val sms = Sms("Hello world")
-
-creatary.smser.send(sms, "valid_access_token") match {
-  case Response(Status("0", _)) => println("ok")
-  case _ => println("something wrong")
+try {
+  val sms = Sms("Hello world")
+  creatary.send(sms, access_token)
+} catch {
+  case e: CreataryException => println("something wrong")
 }
 
 //fetching location
-val location =
-  creatary.localizer.retrieveLocation("valid_access_token") match {
-    case LocationResponse(Status("0", _), loc) => loc
-    case _ => None
-  }
+val location = try {
+  creatary.findLocation(access_token)
+} catch {
+  case e: CreataryException => None
+}
 
 println(location)
 
 //requesting charging
-val chargeReq = ChargeRequest(CODE, charging_code = "10")
-
-creatary.charger.charge(chargeReq, "valid_access_token") match {
-  case Response(Status("0", _)) => println("ok")
-  case _ => println("something wrong")
+try {
+  val chargeReq = ChargeRequest(CODE, charging_code = "10")
+  creatary.charge(chargeReq, access_token)
+} catch {
+  case e: CreataryException => println("something wrong")
 }
 ```
+
+and a bit more verbose version in java
+
+```java
+Creatary creatary = new Creatary("telcoassetmarketplace.com");
+String access_token = "valid_access_token";
+// sending sms
+try {
+  Sms sms = new Sms("Hello world", null, null);
+  creatary.send(sms, access_token);
+} catch (CreataryException e) {
+  System.out.println("something wrong");
+}
+
+// fetching location
+LocationResponse location = null;
+try {
+  location = creatary.findLocation(access_token);
+} catch (CreataryException e) {
+  System.out.println("something wrong");
+}
+
+System.out.println(location);
+
+// requesting charging
+try {
+  ChargeRequest chargeReq = new ChargeRequest("CODE", null, "10");
+  creatary.charge(chargeReq, access_token);
+} catch (CreataryException e) {
+  System.out.println("something wrong");
+}
+```
+		
