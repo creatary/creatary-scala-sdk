@@ -2,6 +2,8 @@ name := "creatary-scala-sdk"
 
 version := "1.0" 
 
+organization := "com.creatary"
+
 scalaVersion := "2.9.1"
 
 libraryDependencies ++= {
