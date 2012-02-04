@@ -30,7 +30,7 @@ trait RequestSenderComponent { this: RequestExecutor =>
       val JSON = Value("application/json")
     }
 
-    def send(request: Request, func: JValue => AnyRef = _.extract[Response]) = {
+    def send[T](request: Request, func: JValue => T = (json: JValue) => json.extract[Response]) : T = {
       try {
         val uri = :/(host) / request.url
         val httpQuery = uri.secure <<? Map("access_token" -> request.accessToken)

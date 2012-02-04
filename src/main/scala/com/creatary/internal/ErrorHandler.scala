@@ -24,7 +24,7 @@ class OAuthException(val error: String) extends RuntimeException(error)
 trait ErrorHandler {
   protected implicit val formats = DefaultFormats
 
-  def throwException(error: StatusCode) = {
+  def throwException[T](error: StatusCode) : T = {
     try {
       val response = parse(error.contents).extract[Response]
       throw new CreataryException(response)
@@ -34,7 +34,7 @@ trait ErrorHandler {
     }
   }
 
-  def throwOAuthException(error: StatusCode) {
+  def throwOAuthException[T](error: StatusCode): T = {
     try {
       throw parse(error.contents).extract[OAuthException]
     } catch {

@@ -2,6 +2,7 @@ package com.creatary.api
 import com.creatary.internal.Request
 import com.creatary.internal.Response
 import com.creatary.internal.RequestSenderComponent
+import com.creatary.internal.Status
 
 /**
  * @author lukaszjastrzebski
