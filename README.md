@@ -73,4 +73,23 @@ try {
   System.out.println("something wrong");
 }
 ```
+
+Using maven just add our repository and dependency
+```xml
+<dependencies>
+	<dependency>
+		<groupId>com.creatary</groupId>
+		<artifactId>creatary-scala-sdk_2.9.1</artifactId>
+		<version>1.0</version>
+	</dependency>
+</dependencies>
+
+<repositories>
+	<repository>
+		<id>creatary</id>
+		<url>http://creatary.github.com/</url>
+	</repository>
+</repositories>
+```
+
 		
