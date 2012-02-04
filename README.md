@@ -75,7 +75,7 @@ try {
 ```
 
 Using maven just add our repository and dependency
-```xml
+```html
 <dependencies>
 	<dependency>
 		<groupId>com.creatary</groupId>
