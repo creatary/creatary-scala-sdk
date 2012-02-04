@@ -12,10 +12,10 @@ import org.mockito.ArgumentCaptor
  * @author lukaszjastrzebski
  *
  */
-class SmsSenderTest extends TestingEnvironment {
+class SmsSenderTest {
 
-  val obj = new SmsSender
-  override val host = "host"
+  val smser = new {override val host = "host"} with SmsSender with TestingEnvironment
+  
   val path = "api/2/sms/send"
   val accessToken = "123"
   val onlyBody = Sms("body", null, null)
@@ -28,9 +28,9 @@ class SmsSenderTest extends TestingEnvironment {
     //given
     val request = Request(path, accessToken, Some(onlyBody))
     //when
-    obj.send(Sms("body"), accessToken)
+    smser.send(Sms("body"), accessToken)
     //then
-    verify(sender) send (Matchers eq request, any())
+    verify(smser.sender) send (Matchers eq request, any())
   }
 
   @Test
@@ -38,9 +38,9 @@ class SmsSenderTest extends TestingEnvironment {
     //given
     val request = Request(path, accessToken, Some(fullSms))
     //when
-    obj.send(Sms("body", "from", "transaction_id"), accessToken)
+    smser.send(Sms("body", "from", "transaction_id"), accessToken)
     //then
-    verify(sender).send(Matchers.eq(request), any())
+    verify(smser.sender).send(Matchers.eq(request), any())
   }
 
   @Test
@@ -48,9 +48,9 @@ class SmsSenderTest extends TestingEnvironment {
     //given
     val request = Request(path, accessToken, Some(withFrom))
     //when
-    obj.send(Sms("body", from = "from"), accessToken)
+    smser.send(Sms("body", from = "from"), accessToken)
     //then
-    verify(sender).send(Matchers.eq(request), any())
+    verify(smser.sender).send(Matchers.eq(request), any())
   }
 
   @Test
@@ -58,19 +58,19 @@ class SmsSenderTest extends TestingEnvironment {
     //given
     val request = Request(path, accessToken, Some(withTransaction))
     //when
-    obj.send(Sms("body", transaction_id = "transaction_id"), accessToken)
+    smser.send(Sms("body", transaction_id = "transaction_id"), accessToken)
     //then
-    verify(sender).send(Matchers.eq(request), any())
+    verify(smser.sender).send(Matchers.eq(request), any())
   }
 
   @Test(expected = classOf[IllegalArgumentException])
   def should_throw_exception_when_no_access_token_passed {
-    obj.send(Sms("body"), null)
+    smser.send(Sms("body"), null)
   }
 
   @Test(expected = classOf[IllegalArgumentException])
   def should_throw_exception_when_no_body_passed {
-    obj.send(Sms(null), "123")
+    smser.send(Sms(null), "123")
   }
 
 }

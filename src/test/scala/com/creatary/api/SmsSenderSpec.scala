@@ -6,18 +6,17 @@ import com.creatary.internal.Request
 import org.mockito.Matchers
 import org.specs2.mock._
 import com.creatary.TestingEnvironment
+import com.creatary.TestingEnvironment
 
 /**
  * @author lukaszjastrzebski
  *
  */
 @RunWith(classOf[JUnitRunner])
-class SmsSenderSpec extends Specification with TestingEnvironment with Mockito {
-
-  override val host = "host"
+class SmsSenderSpec extends Specification with Mockito {
 
   "SmsSender" should {
-    val obj = new SmsSender
+    val smser = new {override val host = "host"} with SmsSender with TestingEnvironment
     val accessToken = "123"
     val path = "api/2/sms/send"
     val onlyBody = Sms("body", null, null)
@@ -27,35 +26,35 @@ class SmsSenderSpec extends Specification with TestingEnvironment with Mockito {
 
     "call sender with body only and access token" in {
       val request = Request(path, accessToken, Some(onlyBody))
-      obj.send(Sms("body"), accessToken)
-      there was one(sender).send(Matchers.eq(request), Matchers.any())
+      smser.send(Sms("body"), accessToken)
+      there was one(smser.sender).send(Matchers.eq(request), Matchers.any())
     }
 
     "call sender with full sms parameters" in {
       val request = Request(path, accessToken, Some(fullSms))
-      obj.send(fullSms, accessToken)
-      there was one(sender).send(Matchers.eq(request), Matchers.any())
+      smser.send(fullSms, accessToken)
+      there was one(smser.sender).send(Matchers.eq(request), Matchers.any())
     }
 
     "call sender with body and from parameters" in {
       val request = Request(path, accessToken, Some(withFrom))
-      obj.send(Sms("body", from = "from"), accessToken)
-      there was one(sender).send(Matchers.eq(request), Matchers.any())
+      smser.send(Sms("body", from = "from"), accessToken)
+      there was one(smser.sender).send(Matchers.eq(request), Matchers.any())
     }
 
     "call sender with body and transaction_id parameters" in {
       val request = Request(path, accessToken, Some(withTransaction))
-      obj.send(Sms("body", transaction_id = "transaction_id"), accessToken)
-      there was one(sender).send(Matchers.eq(request), Matchers.any())
+      smser.send(Sms("body", transaction_id = "transaction_id"), accessToken)
+      there was one(smser.sender).send(Matchers.eq(request), Matchers.any())
     }
 
     "throw exception when no access token passed" in {
-      obj.send(onlyBody, null) must throwA[Exception]
+      smser.send(onlyBody, null) must throwA[Exception]
 
     }
 
     "throw exception when no body passed" in {
-      obj.send(Sms(null), accessToken) must throwA[Exception]
+      smser.send(Sms(null), accessToken) must throwA[Exception]
     }
   }
 

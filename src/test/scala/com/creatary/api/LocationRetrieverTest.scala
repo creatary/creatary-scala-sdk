@@ -14,26 +14,24 @@ import net.liftweb.json.JValue
  * @author lukaszjastrzebski
  *
  */
-class LocationFetcherTest extends ErrorHandler with TestingEnvironment  {
+class LocationRetrieverTest extends ErrorHandler {
 
-  override val host = "host"
-    
   val path = "api/2/location/getcoord"
   val accessToken = "123"
   val ok = Status("0", "ok")
   val location = Location(1.0, 1.0, 1, 1)
     
-  val obj = new LocationFetcher
+  val localiser = new {override val host = "host"} with LocationRetriever with TestingEnvironment
     
   @Test
   def should_fetch_location {
     //given
     val request = Request(path, accessToken, None)
     val response = LocationResponse(ok, location)
-    doReturn(response) when(sender) send(Matchers eq request, any())
+    doReturn(response) when(localiser.sender) send(Matchers eq request, any())
     
     //when
-    val result: LocationResponse = obj.retrieveLocation(accessToken).asInstanceOf[LocationResponse]
+    val result: LocationResponse = localiser.findLocation(accessToken).asInstanceOf[LocationResponse]
     //then
     assertThat(result, is(response))
   }
@@ -43,7 +41,7 @@ class LocationFetcherTest extends ErrorHandler with TestingEnvironment  {
     //given
     
     //when
-    obj.retrieveLocation(null)
+    localiser.findLocation(null)
     //then
   }
 }

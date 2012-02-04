@@ -23,7 +23,6 @@ import net.liftweb.json.DefaultFormats
 
 class RequestSenderTest extends TestingEnvironment {
 
-  protected implicit val formats = DefaultFormats
   override val host = "host"
   val obj = new RequestSender(host)
 
@@ -72,7 +71,7 @@ class RequestSenderTest extends TestingEnvironment {
     val sms = Sms("Hello")
     val request = Request("api", "123")
     val response = new BasicHttpResponse(new ProtocolVersion("http", 1, 1), 200, "")
-    response.setEntity(new StringEntity("""{"status": {"code":"0","message":"ok"},"body":{"latitude":"","longitude":"","accuracy":"","timestamp":""}}""", "application/json", "UTF-8"))
+    response.setEntity(new StringEntity("""{"status": {"code":"0","message":"ok"},"body":{"latitude":1.493971,"longitude":39.287109,"accuracy":100,"timestamp":1328334368680}}""", "application/json", "UTF-8"))
     when(httpClient.execute(any(classOf[HttpHost]), any(classOf[HttpRequestBase]))).thenReturn(response)
     //when
     obj.send(request, _.extract[LocationResponse])

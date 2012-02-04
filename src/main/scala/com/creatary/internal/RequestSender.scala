@@ -11,7 +11,7 @@ trait HttpClientComponent {
   val httpClient: HttpClient
 }
 
-trait RequestExecutorComponent { this: HttpClientComponent =>
+trait RequestExecutor { this: HttpClientComponent =>
 
   val executor: Http
 
@@ -21,7 +21,7 @@ trait RequestExecutorComponent { this: HttpClientComponent =>
 
 }
 
-trait RequestSenderComponent { this: RequestExecutorComponent =>
+trait RequestSenderComponent { this: RequestExecutor =>
 
   val sender: RequestSender
 

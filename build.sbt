@@ -23,3 +23,5 @@ javaOptions += "-Xmx2G"
 scalacOptions ++= Seq("-deprecation", "-unchecked")
 
 EclipseKeys.withSource := true
+
+publishTo := Some(Resolver.file("file",  new File(Path.userHome.absolutePath+"/.m2/repository")))

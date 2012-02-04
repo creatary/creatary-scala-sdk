@@ -20,17 +20,12 @@ case class LocationResponse(status: Status, body: Location)
  * @author lukaszjastrzebski
  *
  */
-trait LocationFetcherComponent { this: RequestSenderComponent =>
+trait LocationRetriever extends ErrorHandler { this: RequestSenderComponent =>
 
-  val localizer: LocationFetcher
-  
-  class LocationFetcher extends ErrorHandler {
-    def retrieveLocation(accessToken: String) = {
-      require(accessToken != null, "access_token is required")
-      val request = Request("api/2/location/getcoord", accessToken)
-      sender.send(request, _.extract[LocationResponse])
-    }
-
+  def findLocation(accessToken: String) = {
+    require(accessToken != null, "access_token is required")
+    val request = Request("api/2/location/getcoord", accessToken)
+    sender.send(request, _.extract[LocationResponse])
   }
 
 }
