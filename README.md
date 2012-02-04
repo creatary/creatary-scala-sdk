@@ -75,7 +75,8 @@ try {
 ```
 
 Using maven just add our repository and dependency
-```html
+```xml
+<project>
 <dependencies>
 	<dependency>
 		<groupId>com.creatary</groupId>
@@ -90,6 +91,7 @@ Using maven just add our repository and dependency
 		<url>http://creatary.github.com/</url>
 	</repository>
 </repositories>
+</project>
 ```
 
 		
