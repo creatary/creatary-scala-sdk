@@ -20,8 +20,12 @@ import org.apache.http.util.EntityUtils
 import org.apache.http.client.methods.HttpGet
 import com.creatary.api.LocationResponse
 import net.liftweb.json.DefaultFormats
+import com.creatary.api.ChargeByCode
+import net.liftweb.json.Serialization
+import com.creatary.api.Response
+import com.creatary.api.Status
 
-class RequestSenderTest extends TestingEnvironment {
+class RequestSenderTest extends TestingEnvironment with JsonHandler {
 
   override val host = "host"
   val obj = new RequestSender(host)
@@ -30,7 +34,7 @@ class RequestSenderTest extends TestingEnvironment {
   def should_send_http_request_with_content_sms {
     //given
     val sms = Sms("Hello")
-    val request = Request("api", "123", Some(sms))
+    val request = Request("api", Map("access_token" -> "123"), Some(sms))
     val response = new BasicHttpResponse(new ProtocolVersion("http", 1, 1), 200, "")
     response.setEntity(new StringEntity("""{"status": {"code":"0","message":"ok"}}""", "application/json", "UTF-8"))
     when(httpClient.execute(any(classOf[HttpHost]), any(classOf[HttpRequestBase]))).thenReturn(response)
@@ -50,7 +54,7 @@ class RequestSenderTest extends TestingEnvironment {
   @Test
   def should_send_http_error_occured {
     val sms = Sms("Hello")
-    val request = Request("api", "123", Some(sms))
+    val request = Request("api", Map("access_token" -> "123"), Some(sms))
     val response = new BasicHttpResponse(new ProtocolVersion("http", 1, 1), 400, "")
     response.setEntity(new StringEntity("""{"status": {"code":"100","message":"ok"}}""", "application/json", "UTF-8"))
     when(httpClient.execute(any(classOf[HttpHost]), any(classOf[HttpRequestBase]))).thenReturn(response)
@@ -69,12 +73,12 @@ class RequestSenderTest extends TestingEnvironment {
   def should_send_http_request_without_content {
     //given
     val sms = Sms("Hello")
-    val request = Request("api", "123")
+    val request = Request("api", Map("access_token" -> "123"))
     val response = new BasicHttpResponse(new ProtocolVersion("http", 1, 1), 200, "")
     response.setEntity(new StringEntity("""{"status": {"code":"0","message":"ok"},"body":{"latitude":1.493971,"longitude":39.287109,"accuracy":100,"timestamp":1328334368680}}""", "application/json", "UTF-8"))
     when(httpClient.execute(any(classOf[HttpHost]), any(classOf[HttpRequestBase]))).thenReturn(response)
     //when
-    obj.send(request, _.extract[LocationResponse])
+    obj.send(request, Serialization.read[LocationResponse](_))
     //then
     val host = ArgumentCaptor.forClass(classOf[HttpHost])
     val requestBaseCaptor = ArgumentCaptor.forClass(classOf[HttpRequestBase])
@@ -88,8 +92,8 @@ class RequestSenderTest extends TestingEnvironment {
   @Test
   def should_send_http_request_with_content_charge_request {
     //given
-    val chargeReq = ChargeRequest(CODE, charging_code = "servicecode")
-    val request = Request("api", "123", Some(chargeReq))
+    val chargeReq = ChargeByCode("servicecode")
+    val request = Request("api", Map("access_token" -> "123"), Some(chargeReq))
     val response = new BasicHttpResponse(new ProtocolVersion("http", 1, 1), 200, "")
     response.setEntity(new StringEntity("""{"status": {"code":"0","message":"ok"}}""", "application/json", "UTF-8"))
     when(httpClient.execute(any(classOf[HttpHost]), any(classOf[HttpRequestBase]))).thenReturn(response)

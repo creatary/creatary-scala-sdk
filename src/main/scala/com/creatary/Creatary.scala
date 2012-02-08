@@ -8,24 +8,27 @@ import com.creatary.internal.RequestExecutor
 import com.creatary.internal.HttpClientComponent
 import com.creatary.api.SmsSender
 import org.apache.http.client.HttpClient
+import com.creatary.api.TransactionFetcher
+import com.creatary.api.Consumer
 
 /**
  * @author lukaszjastrzebski
  *
  */
-trait ProductionEnvironment extends SmsSender with LocationRetriever
-  with ChargingRequestor with RequestSenderComponent 
+trait ProductionEnvironment extends RequestSenderComponent
   with RequestExecutor with HttpClientComponent {
-  
+
   val host: String
   val executor = new Http
   val sender = new RequestSender(host)
   val httpClient: HttpClient = null
-  
+
 }
 
 /**
  * @author lukaszjastrzebski
  *
  */
-class Creatary(override val host: String) extends ProductionEnvironment
+class Creatary(override val host: String, override val consumerCredentials: Consumer) 
+extends SmsSender with LocationRetriever
+  with ChargingRequestor with TransactionFetcher with ProductionEnvironment

@@ -1,7 +1,9 @@
 package com.creatary.internal;
 import dispatch._
+import java.text.SimpleDateFormat
 import net.liftweb.json._
-import net.liftweb.json.Serialization.write
+import com.creatary.api.Response
+import com.creatary.api.Status
 
 /**
  * @param error
@@ -21,25 +23,22 @@ class OAuthException(val error: String) extends RuntimeException(error)
  * @author lukaszjastrzebski
  *
  */
-trait ErrorHandler {
-  protected implicit val formats = DefaultFormats
+trait ErrorHandler extends JsonHandler {
 
-  def throwException[T](error: StatusCode) : T = {
+  def parseException(error: StatusCode) : Exception = {
     try {
       val response = parse(error.contents).extract[Response]
-      throw new CreataryException(response)
+      new CreataryException(response)
     } catch {
-      case e: CreataryException => throw e
-      case _ => throwOAuthException(error)
+      case _ => parseOAuthException(error)
     }
   }
 
-  def throwOAuthException[T](error: StatusCode): T = {
+  def parseOAuthException(error: StatusCode): Exception = {
     try {
-      throw parse(error.contents).extract[OAuthException]
+      parse(error.contents).extract[OAuthException]
     } catch {
-      case e: OAuthException => throw e
-      case e => throw new CreataryException("cannot extract error", e)
+      case e => new CreataryException("cannot extract error", e)
     }
 
   }

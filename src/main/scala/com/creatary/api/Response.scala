@@ -1,4 +1,4 @@
-package com.creatary.internal
+package com.creatary.api
 
 /**
  * @author lukaszjastrzebski
@@ -12,4 +12,10 @@ case class Status(code: String, message: String)
  */
 case class Response(status: Status)
 
+
+/**
+ * @author lukaszjastrzebski
+ *
+ */
+case class Consumer(key: String, secret: String)
 

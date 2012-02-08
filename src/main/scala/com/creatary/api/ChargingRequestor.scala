@@ -1,46 +1,45 @@
 package com.creatary.api
 import com.creatary.internal.RequestSenderComponent
 import com.creatary.internal.Request
-import com.creatary.api.ChargeRequestMethod._
+import com.creatary.internal.ErrorHandler
+import com.creatary.internal.JsonHandler
+import net.liftweb.json.ext.EnumNameSerializer
+import net.liftweb.json.FieldSerializer
 
 /**
  * @author lukaszjastrzebski
  *
  */
-case class ChargeRequest(method: String, amount: String = null, charging_code: String = null)
-
-/**
- * @author lukaszjastrzebski
- *
- */
-object ChargeRequestMethod {
-  val CODE = "CODE"
-  val AMOUNT = "AMOUNT"
+object ChargeRequestMethod extends Enumeration {
+  type ChargeRequestMethod = Value
+  val CODE, AMOUNT = Value
 }
+
+import ChargeRequestMethod._
+sealed abstract class ChargeRequest(val method: ChargeRequestMethod, val value: AnyRef)
 /**
  * @author lukaszjastrzebski
  *
  */
-trait ChargingRequestor { this: RequestSenderComponent =>
+case class ChargeByAmount(amount: java.lang.Double) extends ChargeRequest(AMOUNT, amount)
 
-  def charge(chargeRequest: ChargeRequest, accessToken: String) = {
+case class ChargeByCode(charging_code: String) extends ChargeRequest(CODE, charging_code)
+
+/**
+ * @author lukaszjastrzebski
+ *
+ */
+trait ChargingRequestor extends JsonHandler { this: RequestSenderComponent =>
+
+  protected abstract override implicit def formats = super.formats + new EnumNameSerializer(ChargeRequestMethod) + FieldSerializer[ChargeByAmount]() + FieldSerializer[ChargeByCode]()
+
+  def charge(chargeRequest: ChargeRequest, accessToken: String): Response = {
     require(chargeRequest != null, "chargeRequest cannot be null")
     require(accessToken != null, "accessToken cannot be null")
     require(chargeRequest.method != null, "method cannot be null")
-    require((chargeRequest.method == CODE && chargeRequest.charging_code != null && chargeRequest.amount == null)
-      || (chargeRequest.method == AMOUNT && parsableToDouble(chargeRequest.amount) && chargeRequest.charging_code == null),
-      "code or amount must be supplied")
-    val request = Request("api/2/charge/request", accessToken, Some(chargeRequest))
+    require(chargeRequest.value != null, "charging value parameter cannot be null")
+    val request = Request("api/2/charge/request", Map("access_token" -> accessToken), Some(chargeRequest))
     sender.send(request)
-  }
-
-  private def parsableToDouble(amount: String) = {
-    try {
-      amount.toDouble
-      true
-    } catch {
-      case e => false
-    }
   }
 
 }

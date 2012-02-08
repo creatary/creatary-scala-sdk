@@ -2,14 +2,16 @@ package com.creatary;
 
 import com.creatary.internal.CreataryException;
 
+import com.creatary.api.ChargeByCode;
 import com.creatary.api.ChargeRequest;
+import com.creatary.api.Consumer;
 import com.creatary.api.LocationResponse;
 import com.creatary.api.Sms;
 
 public class ScalaJavaDemo {
 
 	public static void main(String[] args) {
-		Creatary creatary = new Creatary("telcoassetmarketplace.com");
+		Creatary creatary = new Creatary("telcoassetmarketplace.com", new Consumer("consumerkey", "secret"));
 		String access_token = "valid_access_token";
 		// sending sms
 		try {
@@ -31,7 +33,7 @@ public class ScalaJavaDemo {
 
 		// requesting charging
 		try {
-			ChargeRequest chargeReq = new ChargeRequest("CODE", null, "10");
+			ChargeRequest chargeReq = new ChargeByCode("10");
 			creatary.charge(chargeReq, access_token);
 		} catch (CreataryException e) {
 			System.out.println("something wrong");

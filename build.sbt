@@ -16,7 +16,9 @@ libraryDependencies ++= {
 		"org.specs2" %% "specs2" % "1.7.1" % "test",
 		"com.novocode" % "junit-interface" % "0.7" % "test->default",
 		"net.liftweb" %% "lift-json" % liftVersion,
-		"org.mockito" % "mockito-all" % "1.9.0" % "test"
+		"net.liftweb" %% "lift-json-ext" % liftVersion,
+		"org.mockito" % "mockito-all" % "1.9.0" % "test",
+		"net.liftweb" %% "lift-webkit" % liftVersion
 	)
 }
 

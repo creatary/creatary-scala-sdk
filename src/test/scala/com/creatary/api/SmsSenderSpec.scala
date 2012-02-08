@@ -8,8 +8,6 @@ import org.mockito.Mockito.when
 import org.specs2.mock._
 import com.creatary.TestingEnvironment
 import com.creatary.TestingEnvironment
-import com.creatary.internal.Response
-import com.creatary.internal.Status
 import scala.Function1
 import net.liftweb.json.JsonAST.JValue
 

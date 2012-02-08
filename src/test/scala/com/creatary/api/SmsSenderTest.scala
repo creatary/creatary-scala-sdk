@@ -18,49 +18,49 @@ class SmsSenderTest {
   
   val path = "api/2/sms/send"
   val accessToken = "123"
-  val onlyBody = Sms("body", null, null)
-  val fullSms = Sms("body", "from", "transaction_id")
-  val withTransaction = Sms("body", null, "transaction_id")
-  val withFrom = Sms("body", "from", null)
+  val onlyBody = Sms("body", None, None)
+  val fullSms = Sms("body", Some("from"), Some("transaction_id"))
+  val withTransaction = Sms("body", None, Some("transaction_id"))
+  val withFrom = Sms("body", Some("from"), None)
 
   @Test
   def should_call_sender_with_body_only_and_access_token {
     //given
-    val request = Request(path, accessToken, Some(onlyBody))
+    val request = Request(path, Map("access_token" -> accessToken), Some(onlyBody))
     //when
     smser.send(Sms("body"), accessToken)
     //then
-    verify(smser.sender) send (Matchers eq request, any())
+    verify(smser.sender) send (Matchers eq request)
   }
 
   @Test
   def should_call_sender_with_full_sms_parameters {
     //given
-    val request = Request(path, accessToken, Some(fullSms))
+    val request = Request(path, Map("access_token" -> accessToken), Some(fullSms))
     //when
-    smser.send(Sms("body", "from", "transaction_id"), accessToken)
+    smser.send(Sms("body", Some("from"), Some("transaction_id")), accessToken)
     //then
-    verify(smser.sender).send(Matchers.eq(request), any())
+    verify(smser.sender).send(Matchers.eq(request))
   }
 
   @Test
   def should_call_sender_with_body_and_from_parameters {
     //given
-    val request = Request(path, accessToken, Some(withFrom))
+    val request = Request(path, Map("access_token" -> accessToken), Some(withFrom))
     //when
-    smser.send(Sms("body", from = "from"), accessToken)
+    smser.send(Sms("body", from = Some("from")), accessToken)
     //then
-    verify(smser.sender).send(Matchers.eq(request), any())
+    verify(smser.sender).send(Matchers.eq(request))
   }
 
   @Test
   def should_call_sender_with_body_and_transaction_id_parameters {
     //given
-    val request = Request(path, accessToken, Some(withTransaction))
+    val request = Request(path, Map("access_token" -> accessToken), Some(withTransaction))
     //when
-    smser.send(Sms("body", transaction_id = "transaction_id"), accessToken)
+    smser.send(Sms("body", transaction_id = Some("transaction_id")), accessToken)
     //then
-    verify(smser.sender).send(Matchers.eq(request), any())
+    verify(smser.sender).send(Matchers.eq(request))
   }
 
   @Test(expected = classOf[IllegalArgumentException])

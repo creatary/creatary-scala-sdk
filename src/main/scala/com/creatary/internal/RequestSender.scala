@@ -4,8 +4,10 @@ import dispatch._
 import net.liftweb.json._
 import net.liftweb.json.Serialization.write
 import org.apache.http.client.HttpClient
+import com.creatary.api.Consumer
+import com.creatary.api.Response
 
-case class Request(url: String, accessToken: String, body: Option[AnyRef] = None)
+case class Request(url: String, query: Map[String, String], body: Option[AnyRef] = None, credentials: Option[Consumer] = None)
 
 trait HttpClientComponent {
   val httpClient: HttpClient
@@ -24,26 +26,28 @@ trait RequestExecutor { this: HttpClientComponent =>
 trait RequestSenderComponent { this: RequestExecutor =>
 
   val sender: RequestSender
-
-  class RequestSender(host: String) extends ErrorHandler {
+  class RequestSender(host: String) extends ErrorHandler with JsonHandler {
     private object Mime extends Enumeration {
       val JSON = Value("application/json")
     }
 
-    def send[T](request: Request, func: JValue => T = (json: JValue) => json.extract[Response]) : T = {
+    def send[T](request: Request, parse: String => T = (param: String) => Serialization.read[Response](param)) : T = {
       try {
-        val uri = :/(host) / request.url
-        val httpQuery = uri.secure <<? Map("access_token" -> request.accessToken)
-        val response = request.body match {
-          case None => executor(httpQuery as_str)
-          case Some(body) =>
-            val httpRequest = httpQuery << (write(body), Mime.JSON.toString())
-            executor(httpRequest as_str)
+        val httpRequest = :/(host) / request.url <<? request.query secure
+        val authReq = request.credentials match {
+          case Some(consumer) => httpRequest as_! (consumer.key, consumer.secret)
+          case None => httpRequest
         }
-        func(parse(response))
+        val response = request.body match {
+          case Some(body) =>
+            executor(authReq << (write(body), Mime.JSON.toString()) as_str)
+          case None =>
+            executor(authReq as_str)
+        }
+        parse(response)
       } catch {
         case e: StatusCode =>
-          throwException(e)
+          throw parseException(e)
       }
 
     }

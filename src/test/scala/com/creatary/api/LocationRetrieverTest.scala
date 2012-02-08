@@ -7,7 +7,6 @@ import org.mockito.Mockito._
 import org.mockito.Matchers._
 import org.mockito.Matchers
 import com.creatary.internal.Request
-import com.creatary.internal.Status
 import com.creatary.internal.ErrorHandler
 import net.liftweb.json.JValue
 /**
@@ -26,9 +25,9 @@ class LocationRetrieverTest extends ErrorHandler {
   @Test
   def should_fetch_location {
     //given
-    val request = Request(path, accessToken, None)
+    val request = Request(path, Map("access_token" -> accessToken), None)
     val response = LocationResponse(ok, location)
-    doReturn(response) when(localiser.sender) send(Matchers eq request, any())
+    doReturn(response) when(localiser.sender) send(Matchers eq request)
     
     //when
     val result: LocationResponse = localiser.findLocation(accessToken).asInstanceOf[LocationResponse]
