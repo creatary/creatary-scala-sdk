@@ -31,14 +31,15 @@ case class ChargeByCode(charging_code: String) extends ChargeRequest(CODE) {
   override def value = charging_code
 }
 
+trait ChargingAddons extends JsonHandler {
+  protected abstract override implicit def formats = super.formats + FieldSerializer[ChargeByAmount]() + FieldSerializer[ChargeByCode]()
+}
 
 /**
  * @author lukaszjastrzebski
  *
  */
-trait ChargingRequestor extends JsonHandler { this: RequestSenderComponent =>
-
-  protected abstract override implicit def formats = super.formats + new EnumNameSerializer(ChargeRequestMethod) + FieldSerializer[ChargeByAmount]() + FieldSerializer[ChargeByCode]()
+trait ChargingRequestor { this: RequestSenderComponent =>
 
   def charge(chargeRequest: ChargeRequest, accessToken: String): Response = {
     require(chargeRequest != null, "chargeRequest cannot be null")

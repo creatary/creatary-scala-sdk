@@ -12,7 +12,6 @@ case class Status(code: String, message: String)
  */
 case class Response(status: Status)
 
-
 /**
  * @author lukaszjastrzebski
  *

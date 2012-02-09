@@ -14,8 +14,6 @@ object CreataryScalaDemo extends App {
   val creatary = new Creatary("telcoassetmarketplace.com", new Consumer("j17z3thnvwvj6uoy", "e7obz84fcog5ziso"))
   val access_token = "830d41d2d6d085e2b7126ac4a40418a2"
 
-//  val response = creatary.searchTransaction()
-//  println(response.body)
   //sending sms
   try {
     val sms = Sms("Hello world")
@@ -35,9 +33,13 @@ object CreataryScalaDemo extends App {
 
   //requesting charging
   try {
-    val chargeReq = ChargeByCode("10")
+    val chargeReq = ChargeByCode("1")
     creatary.charge(chargeReq, access_token)
   } catch {
     case e: CreataryException => println("cannot charge subscriber: " + e.response)
   }
+  
+  //fetching last transactions
+  val response = creatary.searchTransaction()
+  println(response.body)
 }

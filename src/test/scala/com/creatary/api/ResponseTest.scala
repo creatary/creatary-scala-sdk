@@ -2,18 +2,11 @@ package com.creatary.api
 import org.junit.Test
 import org.junit.Assert._
 import org.hamcrest.CoreMatchers.is
-import java.text.SimpleDateFormat
-import com.creatary.internal.JsonHandler
 import net.liftweb.json._
 import net.liftweb.json.Serialization._
-import com.creatary.api.ChargeRequestMethod._
-import net.liftweb.json.ext.EnumNameSerializer
+import com.creatary.EnumerationsAddon
 
-trait ChargingAddons extends JsonHandler {
-  protected abstract override implicit def formats = super.formats + new EnumNameSerializer(ChargeRequestMethod) + FieldSerializer[ChargeByAmount]() + FieldSerializer[ChargeByCode]()
-}
-
-class ResponseTest extends ChargingAddons {
+class ResponseTest extends ChargingAddons with EnumerationsAddon {
 
   val smsResp = """ {"status": {"code":"0","message":"ok"}} """
 
@@ -24,8 +17,6 @@ class ResponseTest extends ChargingAddons {
   val chargeReq1 = """{"method":"AMOUNT","amount":10.0}"""
 
   val chargeReq2 = """{"method":"CODE","charging_code":"xxx"}"""
-
-  val parser = new JsonHandler {}
 
   @Test
   def should_deserialize_by_amount {

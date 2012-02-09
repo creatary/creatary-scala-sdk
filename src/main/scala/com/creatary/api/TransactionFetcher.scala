@@ -35,13 +35,14 @@ case class SearchRequest(from: Option[Date] = None, to: Option[Date] = None, sta
   correlationId: Option[Long] = None, operator: Option[String] = None, subscriber: Option[String] = None,
   limit: Option[Integer] = None)
 
-case class Transaction(uuid: String, earningAmount: Option[Double], earningCurrency: Option[String],
+case class Transaction(uuid: String,
   direction: TransactionDirection, start_timestamp: Date, status: TransactionStatus,
-  `type`: TransactionType, operator: Option[String], subscriber: Option[String],
-  applicationName: Option[String], failureCause: Option[String], end_timestamp: Option[Date],
-  correlationId: Option[Long], subscriberChargeAmountCurrencyCode: Option[String],
-  subscriberChargeAmount: Option[Double], subscriberTaxAmountCharged: Option[Double],
-  applicationNumber: Option[String])
+  `type`: TransactionType, earningAmount: Option[Double] = None, earningCurrency: Option[String] = None, 
+  operator: Option[String] = None, subscriber: Option[String] = None,
+  applicationName: Option[String] = None, failureCause: Option[String] = None, end_timestamp: Option[Date] = None,
+  correlationId: Option[Long] = None, subscriberChargeAmountCurrencyCode: Option[String] = None,
+  subscriberChargeAmount: Option[Double] = None, subscriberTaxAmountCharged: Option[Double] = None,
+  applicationNumber: Option[String] = None)
 
 case class TransactionResponse(status: Status, body: List[Transaction])
 
@@ -53,9 +54,6 @@ trait TransactionFetcher extends JsonHandler { this: RequestSenderComponent =>
 
   val host: String
   val consumerCredentials: Consumer
-
-  protected abstract override implicit def formats = super.formats + new EnumNameSerializer(TransactionStatus) +
-    new EnumNameSerializer(TransactionDirection) + new EnumNameSerializer(TransactionType)
 
   def searchTransaction(search: Option[SearchRequest] = None) = {
 
@@ -84,7 +82,7 @@ trait TransactionFetcher extends JsonHandler { this: RequestSenderComponent =>
 
   private def addIfNotNull(result: Map[String, String], key: String, value: Option[AnyRef]) = {
     value match {
-      case Some(content) => result + (key -> value.toString())
+      case Some(content) => result + (key -> content.toString())
       case None => result
     }
   }
