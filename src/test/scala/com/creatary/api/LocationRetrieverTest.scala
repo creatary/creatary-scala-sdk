@@ -27,7 +27,7 @@ class LocationRetrieverTest extends ErrorHandler {
     //given
     val request = Request(path, Map("access_token" -> accessToken), None)
     val response = LocationResponse(ok, location)
-    doReturn(response) when(localiser.sender) send(Matchers eq request)
+    doReturn(response) when(localiser.sender) send(Matchers eq request, Matchers.any())
     
     //when
     val result: LocationResponse = localiser.findLocation(accessToken).asInstanceOf[LocationResponse]

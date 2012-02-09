@@ -30,34 +30,14 @@ class ChargingRequestorTest {
   }  
   
   @Test(expected = classOf[IllegalArgumentException])
-  def should_throw_exception_no_method {
-    charger.charge(ChargeByCode("10"), accessToken)
-  }  
-  
-  @Test(expected = classOf[IllegalArgumentException])
   def should_throw_exception_no_code_when_code {
-    charger.charge(ChargeByCode("10"), accessToken)
+    charger.charge(ChargeByCode(null), accessToken)
   }  
   
   @Test(expected = classOf[IllegalArgumentException])
   def should_throw_exception_no_amount_when_amount {
-    charger.charge(ChargeByAmount(12), accessToken)
-  }  
-  
-  @Test(expected = classOf[IllegalArgumentException])
-  def should_throw_exception_bad_method {
-    charger.charge(ChargeByCode(null), accessToken)
-  }   
-  
-  @Test(expected = classOf[IllegalArgumentException])
-  def should_throw_exception_amount_and_code {
-    charger.charge(ChargeByAmount(12), accessToken)
-  }   
-  
-  @Test(expected = classOf[IllegalArgumentException])
-  def should_throw_exception_when_amount_no_number {
     charger.charge(ChargeByAmount(null), accessToken)
-  } 
+  }  
   
   @Test
   def should_charge_by_amount {
@@ -66,7 +46,7 @@ class ChargingRequestorTest {
     //when
     charger.charge(byAmount, accessToken)
     //then
-    verify(charger.sender).send(Matchers.eq(request))
+    verify(charger.sender).send(Matchers.eq(request), Matchers.any())
   }   
   
   @Test
@@ -76,7 +56,7 @@ class ChargingRequestorTest {
     //when
     charger.charge(byCode, accessToken)
     //then
-    verify(charger.sender).send(Matchers.eq(request))
+    verify(charger.sender).send(Matchers.eq(request), Matchers.any())
   }  
     
 }

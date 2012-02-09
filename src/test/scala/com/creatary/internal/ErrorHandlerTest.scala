@@ -12,61 +12,36 @@ class ErrorHandlerTest {
 
   val unknownError = Response(Status("-1", "cannot extract error"))
   val errorResponse = Response(Status("100", "invalid_request"))
-  
+
   val obj = new ErrorHandlerImpl
-  
+
   @Test
   def should_not_parse_error {
-    try {
-    	obj.parseException(StatusCode(400, ""))
-    	fail
-    } catch {
-      case e: CreataryException => assertThat(e.response, is(unknownError))
-      case _ => fail
-    }
+    val exception = obj.parseException(StatusCode(400, "")).asInstanceOf[CreataryException]
+    assertThat(exception.response, is(unknownError))
   }
-  
+
   @Test
   def should_not_parse_error_trying_oauth {
-    try {
-    	obj.parseOAuthException(StatusCode(400, ""))
-    	fail
-    } catch {
-      case e: CreataryException => assertThat(e.response, is(unknownError))
-      case _ => fail
-    }
-  }  
-  
+    val exception = obj.parseOAuthException(StatusCode(400, "")).asInstanceOf[CreataryException]
+    assertThat(exception.response, is(unknownError))
+  }
+
   @Test
   def should_parse_error_trying_oauth {
-    try {
-    	obj.parseOAuthException(StatusCode(400, """{"error":"invalid_request"}"""))
-    	fail
-    } catch {
-      case e: OAuthException => assertThat(e.error, is("invalid_request"))
-      case e => fail
-    }
+    val exception = obj.parseOAuthException(StatusCode(400, """{"error":"invalid_request"}"""))
+    assertThat(exception, is(OAuthException("invalid_request").asInstanceOf[Exception]))
   }
-  
+
   @Test
   def should_forward_parsing_error {
-    try {
-    	obj.parseException(StatusCode(400, """{"error":"invalid_request"}"""))
-    	fail
-    } catch {
-      case e: OAuthException => assertThat(e.error, is("invalid_request"))
-      case e => fail
-    }
+    val exception = obj.parseException(StatusCode(400, """{"error":"invalid_request"}"""))
+    assertThat(exception, is(OAuthException("invalid_request").asInstanceOf[Exception]))
   }
-  
+
   @Test
   def should_parse_error {
-    try {
-    	obj.parseException(StatusCode(400, "{\"status\":{\"code\":\"100\",\"message\":\"invalid_request\"}}"))
-    	fail
-    } catch {
-      case e: CreataryException => assertThat(e.response, is(errorResponse))
-      case e => fail
-    }
-  }  
+    val exception = obj.parseException(StatusCode(400, "{\"status\":{\"code\":\"100\",\"message\":\"invalid_request\"}}"))
+    assertThat(exception, is(CreataryException(errorResponse).asInstanceOf[Exception]))
+  }
 }

@@ -1,9 +1,11 @@
 package com.creatary.api
 import org.junit.Test
+import org.junit.Assert._
+import org.hamcrest.CoreMatchers.is
 import java.text.SimpleDateFormat
 import com.creatary.internal.JsonHandler
 import net.liftweb.json._
-import net.liftweb.json.Serialization.write
+import net.liftweb.json.Serialization._
 import com.creatary.api.ChargeRequestMethod._
 import net.liftweb.json.ext.EnumNameSerializer
 
@@ -26,10 +28,26 @@ class ResponseTest extends ChargingAddons {
   val parser = new JsonHandler {}
 
   @Test
-  def should_deserialize = {
-    println(write(ChargeByAmount(10.0)))
-    println(write(ChargeByCode("xxx")))
-    println(Serialization.read[ChargeByAmount](chargeReq1))
-    println(Serialization.read[ChargeByCode](chargeReq2))
+  def should_deserialize_by_amount {
+    val result = read[ChargeByAmount](chargeReq1)
+    assertThat(result, is(ChargeByAmount(10.0)))
+  }
+  
+  @Test
+  def should_deserialize_by_code {
+    val result = read[ChargeByCode](chargeReq2)
+    assertThat(result, is(ChargeByCode("xxx")))
+  }
+
+  @Test
+  def should_serialize_by_amount {
+    val json = write(ChargeByAmount(10.0))
+    assertThat(json, is(chargeReq1))
+  }
+
+  @Test
+  def should_serialize_by_code {
+    val json = write(ChargeByCode("xxx"))
+    assertThat(json, is(chargeReq2))
   }
 }

@@ -30,7 +30,7 @@ class SmsSenderTest {
     //when
     smser.send(Sms("body"), accessToken)
     //then
-    verify(smser.sender) send (Matchers eq request)
+    verify(smser.sender) send (Matchers eq request, Matchers.any())
   }
 
   @Test
@@ -40,7 +40,7 @@ class SmsSenderTest {
     //when
     smser.send(Sms("body", Some("from"), Some("transaction_id")), accessToken)
     //then
-    verify(smser.sender).send(Matchers.eq(request))
+    verify(smser.sender).send(Matchers.eq(request), Matchers.any())
   }
 
   @Test
@@ -50,7 +50,7 @@ class SmsSenderTest {
     //when
     smser.send(Sms("body", from = Some("from")), accessToken)
     //then
-    verify(smser.sender).send(Matchers.eq(request))
+    verify(smser.sender).send(Matchers.eq(request), Matchers.any())
   }
 
   @Test
@@ -60,7 +60,7 @@ class SmsSenderTest {
     //when
     smser.send(Sms("body", transaction_id = Some("transaction_id")), accessToken)
     //then
-    verify(smser.sender).send(Matchers.eq(request))
+    verify(smser.sender).send(Matchers.eq(request), Matchers.any())
   }
 
   @Test(expected = classOf[IllegalArgumentException])

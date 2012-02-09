@@ -24,11 +24,15 @@ import com.creatary.api.ChargeByCode
 import net.liftweb.json.Serialization
 import com.creatary.api.Response
 import com.creatary.api.Status
+import net.liftweb.json.ext.EnumNameSerializer
+import com.creatary.api.ChargeRequestMethod
+import com.creatary.api.ChargingAddons
 
 class RequestSenderTest extends TestingEnvironment with JsonHandler {
 
   override val host = "host"
-  val obj = new RequestSender(host)
+  
+  val obj = new RequestSender(host) with ChargingAddons
 
   @Test
   def should_send_http_request_with_content_sms {
@@ -48,7 +52,7 @@ class RequestSenderTest extends TestingEnvironment with JsonHandler {
     val requestBase = requestBaseCaptor.getValue.asInstanceOf[HttpPost]
     assertThat(requestBase.getMethod, is("POST"))
     assertThat(requestBase.getRequestLine.getUri, is("/api?access_token=123"))
-    assertThat(EntityUtils.toString(requestBase.getEntity()), is("{\"body\":\"Hello\",\"from\":null,\"transaction_id\":null}"))
+    assertThat(EntityUtils.toString(requestBase.getEntity()), is("""{"body":"Hello"}"""))
   }
 
   @Test
@@ -107,7 +111,7 @@ class RequestSenderTest extends TestingEnvironment with JsonHandler {
     val requestBase = requestBaseCaptor.getValue.asInstanceOf[HttpPost]
     assertThat(requestBase.getMethod, is("POST"))
     assertThat(requestBase.getRequestLine.getUri, is("/api?access_token=123"))
-    assertThat(EntityUtils.toString(requestBase.getEntity()), is("{\"method\":\"CODE\",\"amount\":null,\"charging_code\":\"servicecode\"}"))
+    assertThat(EntityUtils.toString(requestBase.getEntity()), is("""{"method":"CODE","charging_code":"servicecode"}"""))
   }
 
 }

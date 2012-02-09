@@ -9,7 +9,7 @@ import com.creatary.api.Status
  * @param error
  * @param cause
  */
-class CreataryException(val response: Response, cause: Throwable = null) extends RuntimeException(response.status.message, cause) {
+case class CreataryException(response: Response, cause: Throwable = null) extends RuntimeException(response.status.message, cause) {
   def this(error: String, cause: Throwable) = this(Response(Status("-1", error)), cause)
 }
 
@@ -17,7 +17,7 @@ class CreataryException(val response: Response, cause: Throwable = null) extends
  * @author lukaszjastrzebski
  *
  */
-class OAuthException(val error: String) extends RuntimeException(error)
+case class OAuthException(val error: String) extends RuntimeException(error)
 
 /**
  * @author lukaszjastrzebski

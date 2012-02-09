@@ -16,14 +16,21 @@ object ChargeRequestMethod extends Enumeration {
 }
 
 import ChargeRequestMethod._
-sealed abstract class ChargeRequest(val method: ChargeRequestMethod, val value: AnyRef)
+sealed abstract class ChargeRequest(val method: ChargeRequestMethod) {
+  def value: AnyRef
+}
 /**
  * @author lukaszjastrzebski
  *
  */
-case class ChargeByAmount(amount: java.lang.Double) extends ChargeRequest(AMOUNT, amount)
+case class ChargeByAmount(amount: java.lang.Double) extends ChargeRequest(AMOUNT) {
+  override def value = amount
+}
 
-case class ChargeByCode(charging_code: String) extends ChargeRequest(CODE, charging_code)
+case class ChargeByCode(charging_code: String) extends ChargeRequest(CODE) {
+  override def value = charging_code
+}
+
 
 /**
  * @author lukaszjastrzebski
