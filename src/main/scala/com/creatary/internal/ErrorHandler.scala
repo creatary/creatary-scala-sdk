@@ -38,7 +38,7 @@ trait ErrorHandler extends JsonHandler {
     try {
       parse(error.contents).extract[OAuthException]
     } catch {
-      case e => new CreataryException("cannot extract error", e)
+      case e => new CreataryException("cannot extract error: " + error.code  + error.contents, e)
     }
 
   }

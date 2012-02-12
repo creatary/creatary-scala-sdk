@@ -17,6 +17,7 @@ import com.creatary.api.TransactionStatus
 import com.creatary.api.TransactionType
 import com.creatary.api.TransactionDirection
 import com.creatary.api.ChargeRequestMethod
+import com.creatary.api.SubscriptionHandler
 
 trait EnumerationsAddon extends JsonHandler {
   protected abstract override implicit def formats = super.formats +
@@ -43,4 +44,4 @@ trait ProductionEnvironment extends RequestSenderComponent
  */
 class Creatary(override val host: String, override val consumerCredentials: Consumer)
   extends SmsSender with LocationRetriever
-  with ChargingRequestor with TransactionFetcher with ProductionEnvironment
+  with ChargingRequestor with TransactionFetcher with SubscriptionHandler with ProductionEnvironment

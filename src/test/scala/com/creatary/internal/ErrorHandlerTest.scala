@@ -10,7 +10,7 @@ class ErrorHandlerImpl extends ErrorHandler
 
 class ErrorHandlerTest {
 
-  val unknownError = Response(Status("-1", "cannot extract error"))
+  val unknownError = Response(Status("-1", "cannot extract error: 400"))
   val errorResponse = Response(Status("100", "invalid_request"))
 
   val obj = new ErrorHandlerImpl

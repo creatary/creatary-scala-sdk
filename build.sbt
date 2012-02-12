@@ -1,6 +1,6 @@
 name := "creatary-scala-sdk" 
 
-version := "1.0" 
+version := "1.1" 
 
 organization := "com.creatary"
 
@@ -18,7 +18,8 @@ libraryDependencies ++= {
 		"net.liftweb" %% "lift-json" % liftVersion,
 		"net.liftweb" %% "lift-json-ext" % liftVersion,
 		"org.mockito" % "mockito-all" % "1.9.0" % "test",
-		"net.liftweb" %% "lift-webkit" % liftVersion
+		"net.liftweb" %% "lift-webkit" % liftVersion,
+		"javax.ws.rs" % "jsr311-api" % "1.1.1"
 	)
 }
 

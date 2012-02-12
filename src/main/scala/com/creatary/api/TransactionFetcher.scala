@@ -42,7 +42,7 @@ case class Transaction(uuid: String,
   applicationName: Option[String] = None, failureCause: Option[String] = None, end_timestamp: Option[Date] = None,
   correlationId: Option[Long] = None, subscriberChargeAmountCurrencyCode: Option[String] = None,
   subscriberChargeAmount: Option[Double] = None, subscriberTaxAmountCharged: Option[Double] = None,
-  applicationNumber: Option[String] = None)
+  applicationNumber: Option[String] = None, additionalDeveloperData: Option[String] = None)
 
 case class TransactionResponse(status: Status, body: List[Transaction])
 
