@@ -10,8 +10,9 @@ import org.apache.http.client.HttpClient
  * @author lukaszjastrzebski
  *
  */
-trait TestingEnvironment extends ProductionEnvironment {
-
+trait TestingEnvironment extends RequestSenderComponent
+  with RequestExecutor with HttpClientComponent with EnumerationsAddon {
+  val host: String
   override val httpClient = mock(classOf[HttpClient])
   override val executor = new ConfigurableHttp
   override val sender = mock(classOf[RequestSender])
