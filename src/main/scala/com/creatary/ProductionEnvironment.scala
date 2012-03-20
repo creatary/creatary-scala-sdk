@@ -23,10 +23,27 @@ import com.creatary.api.ChargeRequestMethod
 import com.creatary.api.SubscriptionHandler
 
 /**
- * SDK interface
+ * Enumeration handler for json format
  * @author lukaszjastrzebski
  *
  */
-class Creatary(override val host: String, override val consumerCredentials: Consumer)
-  extends SmsSender with LocationRetriever
-  with ChargingRequestor with TransactionFetcher with SubscriptionHandler with ProductionEnvironment
+trait EnumerationsAddon extends JsonHandler {
+	protected abstract override implicit def formats = super.formats +
+			new EnumerationSerializer(TransactionStatus, TransactionType, TransactionDirection, ChargeRequestMethod)
+}
+
+/**
+ * Production environment configuration for creatary
+ * 
+ * @author lukaszjastrzebski
+ *
+ */
+trait ProductionEnvironment extends RequestSenderComponent
+  with RequestExecutor with HttpClientComponent with EnumerationsAddon {
+
+  val host: String
+  val executor = new Http
+  val sender: RequestSender = new RequestSender(host) with ChargingAddons
+  val httpClient: HttpClient = null
+
+}

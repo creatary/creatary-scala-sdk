@@ -1,3 +1,6 @@
+/**
+ * Copyright 2012 Nokia Siemens Networks 
+ */
 package com.creatary.internal;
 import net.liftweb.json._
 import net.liftweb.json.JsonDSL._

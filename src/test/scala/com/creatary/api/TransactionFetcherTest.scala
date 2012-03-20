@@ -1,3 +1,6 @@
+/**
+ * Copyright 2012 Nokia Siemens Networks 
+ */
 package com.creatary.api
 import org.junit.Test
 import org.junit.Assert._

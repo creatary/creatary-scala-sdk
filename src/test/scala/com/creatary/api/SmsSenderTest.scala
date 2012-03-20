@@ -1,3 +1,6 @@
+/**
+ * Copyright 2012 Nokia Siemens Networks 
+ */
 package com.creatary.api
 import com.creatary.internal._
 import org.mockito.Mockito._
@@ -8,10 +11,6 @@ import org.junit.Before
 import com.creatary.TestingEnvironment
 import org.mockito.ArgumentCaptor
 
-/**
- * @author lukaszjastrzebski
- *
- */
 class SmsSenderTest {
 
   val smser = new {override val host = "host"} with SmsSender with TestingEnvironment

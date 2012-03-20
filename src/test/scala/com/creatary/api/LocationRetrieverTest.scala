@@ -1,3 +1,6 @@
+/**
+ * Copyright 2012 Nokia Siemens Networks 
+ */
 package com.creatary.api
 import com.creatary.TestingEnvironment
 import org.junit.Test
@@ -9,10 +12,7 @@ import org.mockito.Matchers
 import com.creatary.internal.Request
 import com.creatary.internal.ErrorHandler
 import net.liftweb.json.JValue
-/**
- * @author lukaszjastrzebski
- *
- */
+
 class LocationRetrieverTest extends ErrorHandler {
 
   val path = "api/2/location/getcoord"

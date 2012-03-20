@@ -1,3 +1,6 @@
+/**
+ * Copyright 2012 Nokia Siemens Networks 
+ */
 package com.creatary.callback.lift
 import net.liftweb.http.rest.RestHelper
 import net.liftweb.http.S
@@ -13,6 +16,11 @@ import com.creatary.api._
 import com.creatary.internal.EnumerationSerializer
 import com.creatary.internal.JsonHandler
 
+/**
+ * Lift based implementation of rest service for creatary api
+ * @author lukaszjastrzebski
+ *
+ */
 trait CreataryRestService extends RestHelper with OAuthCallback with ChargingCallback
   with SmsCallback with SubscriberLifecycleCallback with Logger with JsonHandler {
 

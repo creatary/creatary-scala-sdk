@@ -1,3 +1,6 @@
+/**
+ * Copyright 2012 Nokia Siemens Networks 
+ */
 package com.creatary
 import com.creatary.api.Sms
 import com.creatary.api.Response
@@ -9,6 +12,11 @@ import com.creatary.api.SearchRequest
 import com.creatary.api.ChargeByCode
 import com.creatary.api.Consumer
 
+/**
+ * Demo object to represent SDK usage
+ * @author lukaszjastrzebski
+ *
+ */
 object CreataryScalaDemo extends App {
 
   val creatary = new Creatary("telcoassetmarketplace.com", new Consumer("key", "secret"))

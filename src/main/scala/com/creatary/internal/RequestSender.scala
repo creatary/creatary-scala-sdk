@@ -1,3 +1,6 @@
+/**
+ * Copyright 2012 Nokia Siemens Networks
+ */
 package com.creatary.internal
 
 import dispatch._
@@ -8,13 +11,13 @@ import com.creatary.api.Consumer
 import com.creatary.api.Response
 
 object RequestMethod extends Enumeration {
-	type RequestMethod = Value
-	val GET, POST, PUT, DELETE = Value
+  type RequestMethod = Value
+  val GET, POST, PUT, DELETE = Value
 }
 import RequestMethod._
 
 case class Request(url: String, query: Map[String, String], body: Option[AnyRef] = None, credentials: Option[Consumer] = None,
-    method: Option[RequestMethod] = None)
+  method: Option[RequestMethod] = None)
 
 trait HttpClientComponent {
   val httpClient: HttpClient
@@ -30,10 +33,15 @@ trait RequestExecutor { this: HttpClientComponent =>
 
 }
 
+/**
+ * Request executor using dispatbinder lib
+ * @author lukaszjastrzebski
+ *
+ */
 trait RequestSenderComponent { this: RequestExecutor =>
 
   val sender: RequestSender
-  
+
   class RequestSender(host: String) extends ErrorHandler with JsonHandler {
     private object Mime extends Enumeration {
       val JSON = Value("application/json")
@@ -59,8 +67,7 @@ trait RequestSenderComponent { this: RequestExecutor =>
       result
     }
 
-    
-    private def appendRequestMethod(method: Option[RequestMethod], httpRequest: dispatch.Request) : dispatch.Request = {
+    private def appendRequestMethod(method: Option[RequestMethod], httpRequest: dispatch.Request): dispatch.Request = {
       val result = method match {
         case Some(DELETE) => httpRequest DELETE
         case Some(PUT) => httpRequest PUT
@@ -69,7 +76,7 @@ trait RequestSenderComponent { this: RequestExecutor =>
       }
       result
     }
-    
+
     private def executeRequest(request: com.creatary.internal.Request, fullHttpRequest: dispatch.Request): RequestSenderComponent.this.executor.HttpPackage[String] = {
       val response = request.body match {
         case Some(body) =>

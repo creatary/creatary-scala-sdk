@@ -1,3 +1,6 @@
+/**
+ * Copyright 2012 Nokia Siemens Networks 
+ */
 package com.creatary.api
 import org.specs2.mutable.Specification
 import org.junit.runner.RunWith
@@ -12,7 +15,6 @@ import scala.Function1
 import net.liftweb.json.JsonAST.JValue
 
 /**
- * @author lukaszjastrzebski
  *
  */
 @RunWith(classOf[JUnitRunner])

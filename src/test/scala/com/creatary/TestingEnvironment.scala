@@ -1,3 +1,6 @@
+/**
+ * Copyright 2012 Nokia Siemens Networks 
+ */
 package com.creatary
 import com.creatary.internal.RequestSenderComponent
 import com.creatary.internal.RequestExecutor
@@ -7,7 +10,6 @@ import org.mockito.Matchers._
 import org.apache.http.client.HttpClient
 
 /**
- * @author lukaszjastrzebski
  *
  */
 trait TestingEnvironment extends RequestSenderComponent

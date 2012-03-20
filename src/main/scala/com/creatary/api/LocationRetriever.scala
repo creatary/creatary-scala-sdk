@@ -1,18 +1,23 @@
+/**
+ * Copyright 2012 Nokia Siemens Networks 
+ */
 package com.creatary.api
 import com.creatary.internal.Request
 import com.creatary.internal.RequestSenderComponent
 import com.creatary.internal.ErrorHandler
 import net.liftweb.json.Serialization.read
 import com.creatary.internal.JsonHandler
-
 /**
- * @author lukaszjastrzebski
+
  *
  */
 case class Location(latitude: Double, longitude: Double, accuracy: java.lang.Integer, timestamp: java.lang.Integer)
 
 case class LocationResponse(status: Status, body: Location)
+
 /**
+ * Fetching location of subscriber API
+ * 
  * @author lukaszjastrzebski
  *
  */

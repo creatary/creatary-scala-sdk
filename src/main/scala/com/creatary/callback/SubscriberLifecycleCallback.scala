@@ -1,3 +1,6 @@
+/**
+ * Copyright 2012 Nokia Siemens Networks 
+ */
 package com.creatary.callback
 import javax.ws.rs.Path
 import javax.ws.rs.POST
@@ -26,6 +29,12 @@ import InvokerType._
 case class UnsubscribeMessage(channel: SubscriptionChannel, invoker: InvokerType, applicationName: String,
     notificationType: SubscriberLifecycleType, accessTokens: Option[List[String]], reason: Option[String])
 
+/**
+ * Subscriber unsubscribing callback
+ * 
+ * @author lukaszjastrzebski
+ *
+ */
 @Path("/lifecycle")
 trait SubscriberLifecycleCallback {
 

@@ -1,15 +1,18 @@
+/**
+ * Copyright 2012 Nokia Siemens Networks 
+ */
 package com.creatary.api
 import com.creatary.internal.Request
 import com.creatary.internal.RequestSenderComponent
 import com.creatary.internal.ErrorHandler
 
 /**
- * @author lukaszjastrzebski
  *
  */
 case class Sms(body: String, from: Option[String] = None, transaction_id: Option[String] = None)
 
 /**
+ * Sending Sms API
  * @author lukaszjastrzebski
  *
  */

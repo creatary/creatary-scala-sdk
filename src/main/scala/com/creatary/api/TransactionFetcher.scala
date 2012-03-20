@@ -1,3 +1,6 @@
+/**
+ * Copyright 2012 Nokia Siemens Networks 
+ */
 package com.creatary.api
 import com.creatary.internal.RequestSenderComponent
 import com.creatary.internal.RequestExecutor
@@ -47,6 +50,8 @@ case class Transaction(uuid: String,
 case class TransactionResponse(status: Status, body: List[Transaction])
 
 /**
+ * Transaction API for fetching logs by developer
+ * 
  * @author lukaszjastrzebski
  *
  */
@@ -66,7 +71,7 @@ trait TransactionFetcher extends JsonHandler { this: RequestSenderComponent =>
 
   }
 
-  def buildMap(search: SearchRequest): Map[String, String] = {
+  private def buildMap(search: SearchRequest): Map[String, String] = {
     var result = Map[String, String]()
     result = addIfNotNull(result, "from", formatDate(search.from))
     result = addIfNotNull(result, "to", formatDate(search.to))
@@ -87,7 +92,7 @@ trait TransactionFetcher extends JsonHandler { this: RequestSenderComponent =>
     }
   }
 
-  def formatDate(date: Option[Date]): Option[String] = {
+  private def formatDate(date: Option[Date]): Option[String] = {
     date match {
       case Some(content) => Some(defaultDateFormatter.format(content))
       case None => None

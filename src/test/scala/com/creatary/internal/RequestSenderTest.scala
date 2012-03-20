@@ -1,3 +1,6 @@
+/**
+ * Copyright 2012 Nokia Siemens Networks 
+ */
 package com.creatary.internal
 import com.creatary.TestingEnvironment
 import org.junit.Test

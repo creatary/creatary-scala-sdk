@@ -1,3 +1,6 @@
+/**
+ * Copyright 2012 Nokia Siemens Networks 
+ */
 package com.creatary.callback
 import javax.ws.rs.Path
 import javax.ws.rs.POST
@@ -6,6 +9,11 @@ import javax.ws.rs.core.MediaType._
 
 case class IncomingSms(to: String, body: String, access_token: String, transaction_id: Option[String], token_secret: Option[String])
 
+/**
+ * Notification for incoming SMS
+ * @author lukaszjastrzebski
+ *
+ */
 @Path("/sms")
 trait SmsCallback {
 

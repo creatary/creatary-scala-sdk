@@ -1,3 +1,6 @@
+/**
+ * Copyright 2012 Nokia Siemens Networks 
+ */
 package com.creatary.internal;
 import dispatch._
 import java.text.SimpleDateFormat
@@ -6,20 +9,17 @@ import com.creatary.api.Response
 import com.creatary.api.Status
 
 /**
- * @param error
  * @param cause
  */
 case class CreataryException(response: Response, cause: Throwable = null) extends RuntimeException(response.status.message, cause) {
   def this(error: String, cause: Throwable) = this(Response(Status("-1", error)), cause)
 }
 
-/**
- * @author lukaszjastrzebski
- *
- */
 case class OAuthException(val error: String) extends RuntimeException(error)
 
 /**
+ * Error handling for creatary errors
+ * 
  * @author lukaszjastrzebski
  *
  */

@@ -1,3 +1,6 @@
+/**
+ * Copyright 2012 Nokia Siemens Networks 
+ */
 package com.creatary.api
 
 import com.creatary.TestingEnvironment
@@ -8,7 +11,6 @@ import org.mockito.Mockito._
 import org.mockito.Matchers._
 import org.mockito.Matchers
 /**
- * @author lukaszjastrzebski
  *
  */
 class ChargingRequestorTest {
