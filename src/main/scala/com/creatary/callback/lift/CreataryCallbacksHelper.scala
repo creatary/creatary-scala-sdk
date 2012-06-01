@@ -15,38 +15,35 @@ import com.creatary.callback._
 import com.creatary.api._
 import com.creatary.internal.EnumerationSerializer
 import com.creatary.internal.JsonHandler
+import akka.dispatch.ExecutionContext
+import java.util.concurrent.Executors
+import akka.dispatch.Future
 
 /**
  * Lift based implementation of rest service for creatary api
  * @author lukaszjastrzebski
  *
  */
-trait CreataryRestService extends RestHelper with OAuthCallback with ChargingCallback
-  with SmsCallback with SubscriberLifecycleCallback with Logger with JsonHandler {
+trait CreataryCallbacksHelper extends RestHelper with ChargingCallback
+  with SmsCallback with SubscriberLifecycleCallback with TaskCompletionLogger with JsonHandler {
 
   override implicit def formats = super.formats +
     new EnumerationSerializer(TransactionStatus, TransactionType, TransactionDirection, SubscriptionChannel, InvokerType,
         SubscriberLifecycleType)
 
+  implicit val executionContext = ExecutionContext.fromExecutorService(Executors.newCachedThreadPool())
+  
   serve {
-    case "creatary" :: "oauth" :: "callback" :: _ Post _ =>
-      S.param("code") match {
-        case Full(code) => {
-          onAccessToken(code)
-        }
-        case _ => info("no code parameter from creatary")
-      }
-      JString("ok")
     case "creatary" :: "sms" :: "callback" :: _ JsonPost json =>
-      onSms(json._1.extract[IncomingSms])
+      Future(onSms(json._1.extract[IncomingSms])) onComplete(logCompletion) 
       JString("ok")
 
     case "creatary" :: "lifecycle" :: "callback" :: _ JsonPost json =>
-      onUnsubscribe(json._1.extract[UnsubscribeMessage])
+      Future(onUnsubscribe(json._1.extract[UnsubscribeMessage])) onComplete(logCompletion)
       JString("ok")
 
     case "creatary" :: "charging" :: "callback" :: _ JsonPost json =>
-      onChargedSubscriptionFee(json._1.extract[Transaction])
+      Future(onChargedSubscriptionFee(json._1.extract[Transaction])) onComplete(logCompletion)
       JString("ok")
   }
 }
