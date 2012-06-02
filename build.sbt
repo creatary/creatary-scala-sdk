@@ -1,6 +1,6 @@
 name := "creatary-scala-sdk" 
 
-version := "1.2" 
+version := "1.2.1" 
 
 organization := "com.creatary"
 
